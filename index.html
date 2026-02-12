@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Love</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+/* IMPORTANT FIX HERE */
+body{
+    height:100vh;
+    overflow-x:hidden;   /* allow inner scroll */
+    overflow-y:hidden;   /* prevent full page scroll */
+    color:white;
+    background:linear-gradient(-45deg,#ff0000,#0f9b0f,#ff4b8b,#7f00ff);
+    background-size:400% 400%;
+    animation:gradientMove 15s ease infinite;
+}
+
+@keyframes gradientMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.page{
+    position:absolute;
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    padding:20px;
+    opacity:0;
+    transform:scale(.9);
+    transition:.6s ease;
+    pointer-events:none;
+}
+
+.page.active{
+    opacity:1;
+    transform:scale(1);
+    pointer-events:auto;
+}
+
+.card{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(20px);
+    padding:40px;
+    border-radius:25px;
+    width:95%;
+    max-width:1100px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.5);
+    border:1px solid rgba(255,255,255,0.3);
+}
+
+h1{
+    font-size:clamp(26px,5vw,48px);
+    margin-bottom:20px;
+}
+
+button{
+    margin-top:25px;
+    padding:12px 35px;
+    border:none;
+    border-radius:30px;
+    font-size:16px;
+    cursor:pointer;
+    background:linear-gradient(45deg,#ff4b8b,#ff7eb3);
+    color:white;
+    transition:.3s;
+}
+
+button:hover{
+    transform:translateY(-4px);
+    box-shadow:0 10px 25px rgba(255,75,139,0.6);
+}
+
+input{
+    padding:12px;
+    width:250px;
+    border:none;
+    border-radius:30px;
+    text-align:center;
+    margin-top:15px;
+}
+
+.letter{
+    text-align:left;
+    line-height:1.8;
+    font-size:17px;
+    white-space:pre-line;
+}
+
+/* SCROLL FIX */
+.gallery-container{
+    max-height:400px;
+    overflow-y:auto;
+    overflow-x:hidden;
+    padding-right:10px;
+}
+
+/* Custom scrollbar */
+.gallery-container::-webkit-scrollbar{
+    width:8px;
+}
+.gallery-container::-webkit-scrollbar-thumb{
+    background:#ff4b8b;
+    border-radius:10px;
+}
+
+/* Gallery */
+.gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+    margin-top:25px;
+}
+
+.gallery img,
+.gallery video{
+    width:100%;
+    height:300px;
+    object-fit:cover;
+    border-radius:25px;
+    padding:5px;
+    background:linear-gradient(45deg, red, green, #ff4b8b, #00ffcc);
+    background-size:300% 300%;
+    animation:borderMove 6s linear infinite;
+    border:5px solid transparent;
+    transition:0.4s ease;
+}
+
+@keyframes borderMove{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.gallery img:hover,
+.gallery video:hover{
+    transform:scale(1.08);
+    box-shadow:0 0 35px rgba(255,255,255,0.9);
+}
+
+/* Floating Hearts */
+.heart{
+    position:fixed;
+    font-size:20px;
+    animation: floatUp linear forwards;
+    pointer-events:none;
+    z-index:0;
+}
+
+@keyframes floatUp{
+    0%{transform:translateY(0); opacity:1;}
+    100%{transform:translateY(-120vh); opacity:0;}
+}
+
+/* Firework */
+.firework{
+    position:fixed;
+    font-size:30px;
+    animation:explode 1s ease-out forwards;
+    pointer-events:none;
+    z-index:5;
+}
+
+@keyframes explode{
+    0%{transform:scale(0);opacity:1;}
+    100%{transform:scale(3);opacity:0;}
+}
+
+#noBtn{ background:#333; }
+#result{ margin-top:20px; font-size:22px; }
+
+</style>
+</head>
+
+<body>
+
+<div class="page active" id="page1">
+<div class="card">
+<h1>Enter Our Secret Password</h1>
+<input type="password" id="password" placeholder="Secret">
+<br>
+<button onclick="unlock()">Unlock</button>
+<p id="error"></p>
+</div>
+</div>
+
+<div class="page" id="page2">
+<div class="card">
+<h1>Happy Valentine's Day</h1>
+<button onclick="goTo('page3')">Read My Letter</button>
+</div>
+</div>
+
+<div class="page" id="page3">
+<div class="card">
+<h1>My Love Letter</h1>
+<div class="letter" id="typingText"></div>
+<button onclick="goTo('page4')">See Our Memories</button>
+</div>
+</div>
+
+<div class="page" id="page4">
+<div class="card">
+<h1>Our Beautiful Memories</h1>
+
+<div class="gallery-container">
+<div class="gallery">
+<img src="images/photo1.jpg">
+<img src="images/photo2.jpg">
+<img src="images/photo3.jpg">
+<img src="images/photo4.jpg">
+<img src="images/photo5.jpg">
+<img src="images/photo6.jpg">
+<video controls><source src="videos/video1.mp4" type="video/mp4"></video>
+<video controls><source src="videos/video2.mp4" type="video/mp4"></video>
+</div>
+</div>
+
+<button onclick="goTo('page5')">Final Question</button>
+</div>
+</div>
+
+<div class="page" id="page5">
+<div class="card">
+<h1>Will You Be Mine Forever?</h1>
+<button onclick="yesClick()">Yes</button>
+<button id="noBtn">No</button>
+<div id="result"></div>
+</div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+const correctPassword="Challo";
+let i=0;
+let typed=false;
+
+window.goTo=function(id){
+document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+document.getElementById(id).classList.add("active");
+if(id==="page3" && !typed){
+typeLetter();
+typed=true;
+}
+}
+
+window.unlock=function(){
+if(document.getElementById("password").value===correctPassword){
+goTo("page2");
+}else{
+document.getElementById("error").innerText="Wrong password";
+}
+}
+
+const letterText=`My Love,
+
+From the moment you came into my life,
+everything became brighter.
+
+You are my happiness,
+my peace,
+my forever.
+
+I will always choose you.`;
+
+function typeLetter(){
+const el=document.getElementById("typingText");
+if(i<letterText.length){
+el.innerHTML+=letterText.charAt(i);
+i++;
+setTimeout(typeLetter,35);
+}
+}
+
+/* Hearts */
+function createHeart(){
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML=Math.random()>0.5?"❤️":"💚";
+heart.style.left=Math.random()*100+"vw";
+heart.style.bottom="-20px";
+heart.style.fontSize=(Math.random()*20+15)+"px";
+heart.style.animationDuration=(Math.random()*5+5)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),7000);
+}
+setInterval(createHeart,400);
+
+const noBtn=document.getElementById("noBtn");
+noBtn.addEventListener("mouseover",()=>{
+noBtn.style.transform=
+`translate(${Math.random()*200-100}px,
+${Math.random()*200-100}px)`;
+});
+
+window.yesClick=function(){
+document.getElementById("result").innerText="Yay! I Love You Forever Challo!";
+for(let i=0;i<20;i++){
+const fw=document.createElement("div");
+fw.className="firework";
+fw.innerHTML="💖";
+fw.style.left=Math.random()*100+"vw";
+fw.style.top=Math.random()*100+"vh";
+document.body.appendChild(fw);
+setTimeout(()=>fw.remove(),1000);
+}
+}
+
+});
+</script>
+
+</body>
+</html>
